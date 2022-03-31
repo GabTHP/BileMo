@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiResource()
@@ -46,6 +47,7 @@ class User
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
 
