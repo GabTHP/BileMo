@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiResource()
@@ -40,8 +41,8 @@ class Product
     private $model;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
      * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $created_at;
 
@@ -114,23 +115,10 @@ class Product
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updated_at;
-    }
-
-    public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
-    {
-        $this->updated_at = $updated_at;
-
-        return $this;
     }
 
     public function getPrice(): ?string
