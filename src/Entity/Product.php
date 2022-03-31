@@ -41,11 +41,13 @@ class Product
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Gedmo\Timestampable(on="create")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Gedmo\Timestampable(on="update")
      */
     private $updated_at;
 
