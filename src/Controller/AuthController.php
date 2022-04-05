@@ -2,62 +2,41 @@
 
 namespace App\Controller;
 
+use \Firebase\JWT\JWT;
+use App\Repository\CustomerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use App\Repository\ProductRepository;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/api", name="api_product")
+ * @Route("/api", name="api_auth")
  */
-class ProductController extends AbstractController
+class AuthController extends AbstractController
 {
     /**
-     * @Route("/products", name="all_products")
+     * @Route("/auth/login", name="login", methods={"POST"})
      */
-    public function index(ProductRepository $repo): Response
+    public function login(Request $request, CustomerRepository $repo, UserPasswordEncoderInterface $encoder)
     {
-        $products = $repo->findAll();
- 
-        $data = [];
- 
-        foreach ($products as $product) {
-           $data[] = [
-               'id' => $product->getId(),
-               'name' => $product->getName(),
-               'description' => $product->getDescription(),
-               'brand' => $product->getBrand(),
-               'model' => $product->getModel(),
-               'created_at' => $product->getCreatedAt(),
-               'updated_at' => $product->getUpdatedAt(),
-           ];
+        $customer = $repo->findOneBy([
+            'email' => $request->get('email'),
+        ]);
+        if (!$customer || !$encoder->isPasswordValid($customer, $request->get('password'))) {
+            return $this->json([
+                'message' => 'email or password is wrong.',
+            ]);
         }
-        return $this->json($data);
-    }
-
-    /**
-     * @Route("/products/{id}", name="product_show", methods={"GET"})
-     */
-    public function show(ProductRepository $repo, $id): Response
-    {
-        $product = $repo->findOneBy(['id' => $id]);
- 
-        if (!$product) {
- 
-            return $this->json('Aucun ne produit ne correspond à cet id' . $id, 404);
-        }
- 
-        $data =  [
-            'id' => $product->getId(),
-            'name' => $product->getName(),
-            'description' => $product->getDescription(),
-            'brand' => $product->getBrand(),
-            'model' => $product->getModel(),
-            'created_at' => $product->getCreatedAt(),
-            'updated_at' => $product->getUpdatedAt(),
+        $payload = [
+            "user" => $customer->getEmail(),
+            "exp"  => (new \DateTime())->modify("+5 minutes")->getTimestamp(),
         ];
-         
-        return $this->json($data);
+
+        $jwt = JWT::encode($payload, $this->getParameter('jwt_secret'), 'HS256');
+        return $this->json([
+            'message' => 'success!',
+            'token' => sprintf('Bearer %s', $jwt),
+        ]);
     }
 }
