@@ -13,25 +13,27 @@ use App\Repository\ProductRepository;
  */
 class ProductController extends AbstractController
 {
+
+
     /**
      * @Route("/products", name="all_products")
      */
     public function index(ProductRepository $repo): Response
     {
         $products = $repo->findAll();
- 
+
         $data = [];
- 
+
         foreach ($products as $product) {
-           $data[] = [
-               'id' => $product->getId(),
-               'name' => $product->getName(),
-               'description' => $product->getDescription(),
-               'brand' => $product->getBrand(),
-               'model' => $product->getModel(),
-               'created_at' => $product->getCreatedAt(),
-               'updated_at' => $product->getUpdatedAt(),
-           ];
+            $data[] = [
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'description' => $product->getDescription(),
+                'brand' => $product->getBrand(),
+                'model' => $product->getModel(),
+                'created_at' => $product->getCreatedAt(),
+                'updated_at' => $product->getUpdatedAt(),
+            ];
         }
         return $this->json($data);
     }
@@ -42,12 +44,12 @@ class ProductController extends AbstractController
     public function show(ProductRepository $repo, $id): Response
     {
         $product = $repo->findOneBy(['id' => $id]);
- 
+
         if (!$product) {
- 
+
             return $this->json('Aucun ne produit ne correspond à cet id' . $id, 404);
         }
- 
+
         $data =  [
             'id' => $product->getId(),
             'name' => $product->getName(),
@@ -57,7 +59,7 @@ class ProductController extends AbstractController
             'created_at' => $product->getCreatedAt(),
             'updated_at' => $product->getUpdatedAt(),
         ];
-         
+
         return $this->json($data);
     }
 }
