@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Controller\Annotations as Rest;
+
 use App\Repository\ProductRepository;
 
 /**
@@ -16,7 +18,7 @@ class ProductController extends AbstractController
 
 
     /**
-     * @Route("/products", name="all_products")
+     * @Rest\Get("/products", name="all_products")
      */
     public function index(ProductRepository $repo): Response
     {
@@ -39,7 +41,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/products/{id}", name="product_show", methods={"GET"})
+     * @Rest\Get("/products/{id}", name="product_show")
      */
     public function show(ProductRepository $repo, $id): Response
     {
