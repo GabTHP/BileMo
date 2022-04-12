@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 use App\Repository\ProductRepository;
 
@@ -20,8 +22,10 @@ class ProductController extends AbstractController
     /**
      * @Rest\Get("/products", name="all_products")
      */
-    public function index(ProductRepository $repo): Response
+    public function listAction(Request $request, ProductRepository $repo): Response
     {
+        $page = $request->query->get('page', 1);
+
         $products = $repo->findAll();
 
         $data = [];

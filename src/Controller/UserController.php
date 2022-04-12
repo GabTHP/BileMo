@@ -23,18 +23,18 @@ class UserController extends AbstractController
     public function index(UserRepository $repo, $customer_id): Response
     {
         $users = $repo->findBy(['customer' => $customer_id]);
- 
+
         $data = [];
- 
+
         foreach ($users as $user) {
-           $data[] = [
-               'id' => $user->getId(),
-               'username' => $user->getUsername(),
-               'firstName' => $user->getFirstName(),
-               'lastName' => $user->getLastName(),
-               'password' => $user->getPassword(),
-               'created_at' => $user->getCreatedAt(),
-           ];
+            $data[] = [
+                'id' => $user->getId(),
+                'username' => $user->getUsername(),
+                'firstName' => $user->getFirstName(),
+                'lastName' => $user->getLastName(),
+                'password' => $user->getPassword(),
+                'created_at' => $user->getCreatedAt(),
+            ];
         }
         return $this->json($data);
     }
@@ -47,18 +47,18 @@ class UserController extends AbstractController
         $user = $repo->findOneBy(['id' => $user_id]);
 
         if (!$user) {
- 
+
             return $this->json('Aucun utilisateur ne correspond à cet id' . $user_id, 404);
         }
- 
-           $data[] = [
-               'id' => $user->getId(),
-               'username' => $user->getUsername(),
-               'firstName' => $user->getFirstName(),
-               'lastName' => $user->getLastName(),
-               'password' => $user->getPassword(),
-               'created_at' => $user->getCreatedAt(),
-           ];
+
+        $data[] = [
+            'id' => $user->getId(),
+            'username' => $user->getUsername(),
+            'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
+            'password' => $user->getPassword(),
+            'created_at' => $user->getCreatedAt(),
+        ];
 
         return $this->json($data);
     }
@@ -76,10 +76,10 @@ class UserController extends AbstractController
         $user->setEmail($request->request->get('email'));
         $user->setPassword($request->request->get('password'));
         $user->setCustomer($customer);
- 
+
         $em->persist($user);
         $em->flush();
- 
+
         return $this->json('Nouvel utilisateur créé avec succés, son id est le : ' . $user->getId());
     }
 
@@ -91,10 +91,10 @@ class UserController extends AbstractController
         $user = $repo->findOneBy(['id' => $user_id]);
 
         if (!$user) {
- 
+
             return $this->json('Aucun utilisateur ne correspond à cet id' . $user_id, 404);
         }
- 
+
         $em->remove($user);
         $em->flush();
 
