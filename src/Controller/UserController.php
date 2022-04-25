@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * @Route("/api", name="api_user")
  */
+
 class UserController extends AbstractController
 {
     /**

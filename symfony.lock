@@ -1,23 +1,6 @@
 {
-    "api-platform/core": {
-        "version": "2.6",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.5",
-            "ref": "05b57782a78c21a664a42055dc11cf1954ca36bb"
-        },
-        "files": [
-            "config/packages/api_platform.yaml",
-            "config/routes/api_platform.yaml",
-            "src/Entity/.gitignore"
-        ]
-    },
     "behat/transliterator": {
         "version": "v1.5.0"
-    },
-    "composer/package-versions-deprecated": {
-        "version": "1.11.99.5"
     },
     "doctrine/annotations": {
         "version": "1.13",
@@ -112,9 +95,6 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
-    "fig/link-util": {
-        "version": "1.1.2"
-    },
     "firebase/php-jwt": {
         "version": "v6.1.0"
     },
@@ -204,12 +184,6 @@
     "nikic/php-parser": {
         "version": "v4.13.2"
     },
-    "pagerfanta/core": {
-        "version": "v3.6.1"
-    },
-    "pagerfanta/doctrine-orm-adapter": {
-        "version": "v3.6.1"
-    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -229,9 +203,6 @@
         "version": "1.1.2"
     },
     "psr/event-dispatcher": {
-        "version": "1.0.0"
-    },
-    "psr/link": {
         "version": "1.0.0"
     },
     "psr/log": {
@@ -483,9 +454,6 @@
     },
     "symfony/var-exporter": {
         "version": "v5.4.6"
-    },
-    "symfony/web-link": {
-        "version": "v5.4.3"
     },
     "symfony/yaml": {
         "version": "v5.4.3"
