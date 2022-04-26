@@ -6,7 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Controller\Annotations as Rest;
+
+
 use App\Repository\ProductRepository;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/api", name="api_product")
@@ -16,11 +20,18 @@ class ProductController extends AbstractController
 
 
     /**
-     * @Route("/products", name="all_products")
+     * @Rest\Get("/products", name="all_products")
      */
-    public function index(ProductRepository $repo): Response
+    public function listAction(Request $request, ProductRepository $repo, PaginatorInterface $paginator): Response
     {
+
         $products = $repo->findAll();
+
+        $products = $paginator->paginate(
+            $products, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         $data = [];
 
@@ -39,7 +50,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/products/{id}", name="product_show", methods={"GET"})
+     * @Rest\Get("/products/{id}", name="product_show")
      */
     public function show(ProductRepository $repo, $id): Response
     {
