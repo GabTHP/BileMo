@@ -46,7 +46,7 @@ class ProductController extends AbstractController
                 'updated_at' => $product->getUpdatedAt(),
             ];
         }
-        return $this->json($data);
+        return $this->json($data, 200);
     }
 
     /**
@@ -58,7 +58,7 @@ class ProductController extends AbstractController
 
         if (!$product) {
 
-            return $this->json('Aucun ne produit ne correspond à cet id' . $id, 404);
+            return $this->json('Aucun produit ne correspond à cet id' . $id, 404);
         }
 
         $data =  [
@@ -71,6 +71,6 @@ class ProductController extends AbstractController
             'updated_at' => $product->getUpdatedAt(),
         ];
 
-        return $this->json($data);
+        return $this->json($data, 200);
     }
 }
