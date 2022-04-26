@@ -9,8 +9,11 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\UserRepository;
 use App\Repository\CustomerRepository;
 use App\Entity\User;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/api", name="api_user")
@@ -21,9 +24,25 @@ class UserController extends AbstractController
     /**
      * @Route("/customers/{customer_id}/users", name="all_consumer_users", methods={"GET"})
      */
-    public function index(UserRepository $repo, $customer_id): Response
+    public function index(UserRepository $repo, CustomerRepository $repo_customer, $customer_id, PaginatorInterface $paginator, Request $request, TokenStorageInterface $tokenStorageInterface, JWTTokenManagerInterface $jwtManager): Response
     {
+        $this->jwtManager = $jwtManager;
+        $this->tokenStorageInterface = $tokenStorageInterface;
+        $decodedJwtToken = $this->jwtManager->decode($this->tokenStorageInterface->getToken());
+        $email = $decodedJwtToken['email'];
+        $customer = $repo_customer->findOneBy(['email' => $email]);
+
+        if ($customer->getId() != $customer_id)
+
+            return $this->json('fuck you');
+
         $users = $repo->findBy(['customer' => $customer_id]);
+
+        $users = $paginator->paginate(
+            $users, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         $data = [];
 
@@ -43,14 +62,27 @@ class UserController extends AbstractController
     /**
      * @Route("/customers/{customer_id}/users/{user_id}", name="single_consumer_users", methods={"GET"})
      */
-    public function show(UserRepository $repo, $customer_id, $user_id): Response
+    public function show(UserRepository $repo, CustomerRepository $repo_customer, $customer_id, $user_id, TokenStorageInterface $tokenStorageInterface, JWTTokenManagerInterface $jwtManager): Response
     {
+        $this->jwtManager = $jwtManager;
+        $this->tokenStorageInterface = $tokenStorageInterface;
+        $decodedJwtToken = $this->jwtManager->decode($this->tokenStorageInterface->getToken());
+        $email = $decodedJwtToken['email'];
+        $customer = $repo_customer->findOneBy(['email' => $email]);
+
+        if ($customer->getId() != $customer_id)
+
+            return $this->json('fuck you');
+
         $user = $repo->findOneBy(['id' => $user_id]);
 
         if (!$user) {
 
             return $this->json('Aucun utilisateur ne correspond à cet id' . $user_id, 404);
         }
+
+        if ($user->getCustomer()->getId() != $customer->getId())
+            return $this->json('fuck you');
 
         $data[] = [
             'id' => $user->getId(),
@@ -87,16 +119,30 @@ class UserController extends AbstractController
     /**
      * @Route("/customers/{customer_id}/users/{user_id}", name="delete_consumer_user", methods={"DELETE"})
      */
-    public function delete(UserRepository $repo, EntityManagerInterface $em, $customer_id, $user_id): Response
+    public function delete(UserRepository $repo, CustomerRepository $repo_customer, EntityManagerInterface $em, $customer_id, $user_id, TokenStorageInterface $tokenStorageInterface, JWTTokenManagerInterface $jwtManager): Response
     {
-        $user = $repo->findOneBy(['id' => $user_id]);
+        $this->jwtManager = $jwtManager;
+        $this->tokenStorageInterface = $tokenStorageInterface;
+        $decodedJwtToken = $this->jwtManager->decode($this->tokenStorageInterface->getToken());
+        $email = $decodedJwtToken['email'];
+        $customer = $repo_customer->findOneBy(['email' => $email]);
 
-        if (!$user) {
+        if ($customer->getId() != $customer_id)
+
+            return $this->json('fuck you');
+
+
+        $user_to_delete = $repo->findOneBy(['id' => $user_id]);
+
+        if ($user_to_delete->getCustomer()->getId() != $customer->getId())
+            return $this->json('fuck you');
+
+        if (!$user_to_delete) {
 
             return $this->json('Aucun utilisateur ne correspond à cet id' . $user_id, 404);
         }
 
-        $em->remove($user);
+        $em->remove($user_to_delete);
         $em->flush();
 
         return $this->json('Utilisateur supprimé');

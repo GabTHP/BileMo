@@ -10,7 +10,6 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 
 
 use App\Repository\ProductRepository;
-use ContainerAcEqePR\PaginatorInterface_82dac15;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
