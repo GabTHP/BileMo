@@ -58,7 +58,7 @@ class ProductController extends AbstractController
 
         if (!$product) {
 
-            return $this->json('Aucun produit ne correspond à cet id' . $id, 404);
+            return $this->json('Aucun produit ne correspond à cet id ' . $id, 404);
         }
 
         $data =  [

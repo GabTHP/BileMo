@@ -34,7 +34,7 @@ class UserController extends AbstractController
 
         if ($customer->getId() != $customer_id)
 
-            return $this->json('fuck you');
+            return $this->json("accès non autorisé", 401);
 
         $users = $repo->findBy(['customer' => $customer_id]);
 
@@ -72,13 +72,13 @@ class UserController extends AbstractController
 
         if ($customer->getId() != $customer_id)
 
-            return $this->json('fuck you');
+            return $this->json("accès non autorisé", 401);
 
         $user = $repo->findOneBy(['id' => $user_id]);
 
         if (!$user) {
 
-            return $this->json('Aucun utilisateur ne correspond à cet id' . $user_id, 404);
+            return $this->json('Aucun utilisateur ne correspond à cet id ' . $user_id, 404);
         }
 
         if ($user->getCustomer()->getId() != $customer->getId())
@@ -113,7 +113,16 @@ class UserController extends AbstractController
         $em->persist($user);
         $em->flush();
 
-        return $this->json('Nouvel utilisateur créé avec succés, son id est le : ' . $user->getId());
+        $data[] = [
+            'id' => $user->getId(),
+            'username' => $user->getUsername(),
+            'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
+            'password' => $user->getPassword(),
+            'created_at' => $user->getCreatedAt(),
+        ];
+
+        return $this->json($data, 201);
     }
 
     /**
@@ -129,13 +138,13 @@ class UserController extends AbstractController
 
         if ($customer->getId() != $customer_id)
 
-            return $this->json('fuck you');
+            return $this->json("accès non autorisé", 401);
 
 
         $user_to_delete = $repo->findOneBy(['id' => $user_id]);
 
         if ($user_to_delete->getCustomer()->getId() != $customer->getId())
-            return $this->json('fuck you');
+            return $this->json("accès non autorisé", 401);
 
         if (!$user_to_delete) {
 
@@ -145,6 +154,6 @@ class UserController extends AbstractController
         $em->remove($user_to_delete);
         $em->flush();
 
-        return $this->json('Utilisateur supprimé');
+        return $this->json('Utilisateur supprimé', 200);
     }
 }
