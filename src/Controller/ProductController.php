@@ -46,7 +46,7 @@ class ProductController extends AbstractController
                 'updated_at' => $product->getUpdatedAt(),
             ];
         }
-        return $this->json($data, 200);
+        return $this->json($data, 200)->setSharedMaxAge(3600);
     }
 
     /**
@@ -71,6 +71,6 @@ class ProductController extends AbstractController
             'updated_at' => $product->getUpdatedAt(),
         ];
 
-        return $this->json($data, 200);
+        return $this->json($data, 200)->setSharedMaxAge(3600);
     }
 }

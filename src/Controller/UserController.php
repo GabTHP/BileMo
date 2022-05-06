@@ -58,7 +58,7 @@ class UserController extends AbstractController
                 'created_at' => $user->getCreatedAt(),
             ];
         }
-        return $this->json($data, 200);
+        return $this->json($data, 200)->setSharedMaxAge(3600);
     }
 
     /**
@@ -95,7 +95,7 @@ class UserController extends AbstractController
             'created_at' => $user->getCreatedAt(),
         ];
 
-        return $this->json($data, 200);
+        return $this->json($data, 200)->setSharedMaxAge(3600);
     }
 
     /**
