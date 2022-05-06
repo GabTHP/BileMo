@@ -99,14 +99,24 @@ class UserController extends AbstractController
     /**
      * @Route("/customers/{customer_id}/users", name="user_new", methods={"POST"})
      */
-    public function new(Request $request, EntityManagerInterface $em, CustomerRepository $repo, $customer_id): Response
+    public function new(Request $request, EntityManagerInterface $em, UserRepository $repo_user, CustomerRepository $repo, $customer_id): Response
     {
-        $user = new User();
+
+        $email = $request->request->get('email');
         $customer = $repo->findOneBy(['id' => $customer_id]);
+
+        $user_check = $repo_user->findOneby(['email' => $email, 'customer' => $customer_id]);
+
+        if ($user_check)
+
+            return $this->json("Email déjà utilisé", 400);
+
+
+        $user = new User();
         $user->setUsername($request->request->get('username'));
         $user->setFirstName($request->request->get('first_name'));
         $user->setLastName($request->request->get('last_name'));
-        $user->setEmail($request->request->get('email'));
+        $user->setEmail($email);
         $user->setPassword($request->request->get('password'));
         $user->setCustomer($customer);
 
