@@ -56,7 +56,7 @@ class UserController extends AbstractController
                 'created_at' => $user->getCreatedAt(),
             ];
         }
-        return $this->json($data);
+        return $this->json($data, 200);
     }
 
     /**
@@ -93,7 +93,7 @@ class UserController extends AbstractController
             'created_at' => $user->getCreatedAt(),
         ];
 
-        return $this->json($data);
+        return $this->json($data, 200);
     }
 
     /**
