@@ -14,6 +14,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 /**
  * @Route("/api", name="api_user")
@@ -99,7 +101,7 @@ class UserController extends AbstractController
     /**
      * @Route("/customers/{customer_id}/users", name="user_new", methods={"POST"})
      */
-    public function new(Request $request, EntityManagerInterface $em, UserRepository $repo_user, CustomerRepository $repo, $customer_id): Response
+    public function new(ValidatorInterface $validator, Request $request, EntityManagerInterface $em, UserRepository $repo_user, CustomerRepository $repo, $customer_id): Response
     {
 
         $email = $request->request->get('email');
@@ -113,6 +115,8 @@ class UserController extends AbstractController
 
 
         $user = new User();
+
+
         $user->setUsername($request->request->get('username'));
         $user->setFirstName($request->request->get('first_name'));
         $user->setLastName($request->request->get('last_name'));
@@ -120,6 +124,17 @@ class UserController extends AbstractController
         $user->setPassword($request->request->get('password'));
         $user->setCustomer($customer);
 
+        $errors = $validator->validate($user);
+        if (count($errors) > 0) {
+            /*
+            * Uses a __toString method on the $errors variable which is a
+            * ConstraintViolationList object. This gives us a nice string
+            * for debugging.
+            */
+            $errorsString = (string) $errors;
+
+            return $this->json($errorsString, 400);
+        }
         $em->persist($user);
         $em->flush();
 
