@@ -44,6 +44,7 @@ security:
 
   access_control:
     - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/customers/[0-9]+/users, methods: POST, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
