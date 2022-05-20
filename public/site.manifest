@@ -1,0 +1,7 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "BileMo",
+        "description": "Une API REST  pour les vendeurs de mobile.",
+        "version": "1.0.0"
+}
