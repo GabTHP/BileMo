@@ -4,9 +4,9 @@ Lien vers le projet : https://github.com/GabTHP/BileMo
 
 ## Code Validation
 
-[![SymfonyInsight](https://insight.symfony.com/projects/04a7926a-317a-4c4e-9a2e-c9d77f918b47/small.svg)](https://insight.symfony.com/projects/04a7926a-317a-4c4e-9a2e-c9d77f918b47)
+[![SymfonyInsight](https://insight.symfony.com/projects/2f1384be-e7c4-4a0b-82f7-43bdceaf58f5/big.svg)](https://insight.symfony.com/projects/2f1384be-e7c4-4a0b-82f7-43bdceaf58f5)
 
-Lien vers analyse du projet Symfony Insight : https://insight.symfony.com/projects/db671122-5df6-4f87-8e3e-d6823d6ac355
+Lien vers analyse du projet Symfony Insight : https://insight.symfony.com/projects/2f1384be-e7c4-4a0b-82f7-43bdceaf58f5
 
 ## Versions :
 
