@@ -45,10 +45,25 @@ class UserController extends AbstractController
      *     )
      * )
      * 
+     * 
+     * 
+     * @OA\Parameter(
+     *    name="customer_id",
+     *    in="path",
+     *    description="ID of customer that needs to be used - you can only access users linked to the consumer id provided",
+     *    required=true,
+     *    @OA\Schema(
+     *        type="integer",
+     *        format="int64"
+     *    )
+     *  )
+     * 
      * @OA\Response(
      *     response = 401,
      *     description = "You must provide a valid token or you're not accessing the right customer account"
      * )
+     * 
+     * 
      * 
      * 
      * @Security(name="Bearer")
@@ -56,7 +71,7 @@ class UserController extends AbstractController
      * @OA\Parameter(
      *     name="page",
      *     in="query",
-     *     description="The field to show product from page, each page contain 10 products",
+     *     description="The field to paginate user , each page will contain 10 users",
      *     @OA\Schema(type="string")
      * )
      * 
@@ -108,6 +123,17 @@ class UserController extends AbstractController
      *        @OA\Items(ref=@Model(type=User::class))
      *     )
      * )
+     * 
+     * @OA\Parameter(
+     *    name="customer_id",
+     *    in="path",
+     *    description="ID of customer that needs to be used - you can only access users linked to the consumer id provided",
+     *    required=true,
+     *    @OA\Schema(
+     *        type="integer",
+     *        format="int64"
+     *    )
+     *  )
      * 
      * @OA\Response(
      *     response = 401,
@@ -242,6 +268,17 @@ class UserController extends AbstractController
 
     /**
      * 
+     * @OA\Parameter(
+     *    name="customer_id",
+     *    in="path",
+     *    description="ID of customer that needs to be used - you can only delete users linked to the consumer id provided",
+     *    required=true,
+     *    @OA\Schema(
+     *        type="integer",
+     *        format="int64"
+     *    )
+     *  )
+     * 
      * 
      * @Rest\Delete("/customers/{customer_id}/users/{user_id}", name="delete_consumer_user")
      * 
@@ -283,5 +320,36 @@ class UserController extends AbstractController
         $em->flush();
 
         return $this->json('Utilisateur supprimé', 200);
+    }
+    /**
+     * 
+     * @Rest\Post("/login_check", name="check_login")
+     * 
+     * 
+     * @OA\Response(
+     *      response=200,
+     *      description="Return token enabling the use of the api ",
+     *     )
+     * )
+     * 
+     * @OA\Response(
+     *      response=400,
+     *      description="Invalid credentials ",
+     *     )
+     * )
+     * 
+     *@OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="raw",
+     *       @OA\Schema(
+     *         @OA\Property(property="email", description="Email address .", type="string", format="email", example="j.dujardin@gmail.com"),
+     *         @OA\Property(property="password", description="Password.", type="string", format="password", example="Azerty34!!")
+     *       )
+     *     )
+     *   )
+     */
+    public function checkLogin()
+    {
     }
 }

@@ -44,6 +44,6 @@ Configuration de la connexion à la base de données avec le modèle ci-dessous 
 
 - La documentation est disponible en local sur la route : http://127.0.0.1:8000/api/swagger
 
-- La documentation est disponible en ligne sur : lien swagger
+- La documentation est aussi disponible en ligne sur : https://app.swaggerhub.com/apis-docs/GabTHP/BileMoAPI/1.0.0
 
 Bonne utilisation !
