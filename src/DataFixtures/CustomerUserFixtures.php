@@ -38,12 +38,12 @@ class CustomerUserFixtures extends Fixture
                 $user->setFirstName($faker->firstName);
                 $user->setLastName($faker->lastName);
                 $user->setEmail($faker->email);
-                $password = 'azerty';
+                $password = $this->encoder->encodePassword($customer, 'azerty');
                 $user->setPassword($password);
                 $user->setCustomer($customer);
                 $manager->persist($user);
-            }   
-        }      
+            }
+        }
         $manager->flush();
     }
 }
