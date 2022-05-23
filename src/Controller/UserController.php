@@ -284,4 +284,35 @@ class UserController extends AbstractController
 
         return $this->json('Utilisateur supprimé', 200);
     }
+    /**
+     * 
+     * @Rest\Post("/login_check", name="check_login")
+     * 
+     * 
+     * @OA\Response(
+     *      response=200,
+     *      description="Return token enabling the use of the api ",
+     *     )
+     * )
+     * 
+     * @OA\Response(
+     *      response=200,
+     *      description="Invalid credentials ",
+     *     )
+     * )
+     * 
+     *@OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="raw",
+     *       @OA\Schema(
+     *         @OA\Property(property="email", description="Email address .", type="string", format="email", example="j.dujardin@gmail.com"),
+     *         @OA\Property(property="password", description="Password.", type="string", format="password", example="Azerty34!!")
+     *       )
+     *     )
+     *   )
+     */
+    public function checkLogin()
+    {
+    }
 }
